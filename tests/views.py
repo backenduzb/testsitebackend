@@ -27,7 +27,7 @@ class AllTestCaseView(APIView):
 
         serializer = TestSerializer(tests, many=True)
         return Response(
-            {'data':serializer.data},
+            {'data':serializer.data, 'count':len(tests)},
             status=200
         )
 

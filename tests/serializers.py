@@ -8,18 +8,23 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class TestSerializer(serializers.ModelSerializer):
-
+    
     class Meta:
         model = Test
         fields = '__all__'
 
+    
 class TestCaseSerializer(serializers.ModelSerializer):
     tests = TestSerializer(read_only=True, many=True)
     subject = SubjectSerializer(read_only=True)
+    tests_count = serializers.SerializerMethodField()
 
     class Meta:
         model = TestCase
-        fields = ['id','name','subject', 'tests']
+        fields = ['id','name','subject', 'tests', 'tests_count']
+
+    def get_tests_count(self, obj):
+        return obj.tests.count()
 
 class TestCheckerSerializer(serializers.Serializer):
     testcase_id = serializers.IntegerField()
