@@ -35,6 +35,11 @@ else:
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
+if not DEBUG:
+    CSRF_TRUSET_ORIGINS = [
+        "https://testsitebackend-production.up.railway.app"
+    ]
+
 # Application definition
 
 INSTALLED_APPS = [
