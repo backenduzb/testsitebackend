@@ -30,15 +30,16 @@ DEBUG = os.getenv("DEBUG", "True")
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOST")
+    ALLOWED_HOSTS = [
+        "testsitebackend-production.up.railway.app"
+    ]
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
-if not DEBUG:
-    CSRF_TRUSTED_ORIGINS = [
-        "https://testsitebackend-production.up.railway.app"
-    ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://testsitebackend-production.up.railway.app"
+]
 
 # Application definition
 
