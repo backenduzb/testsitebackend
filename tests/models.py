@@ -26,7 +26,7 @@ class TestCase(models.Model):
         verbose_name_plural = "TestCaselar"
 
 class Ball(models.Model):
-    name = models.CharField(max_length=256, verbose_name="Mezon nomi")
+    name = models.CharField(max_length=256,choices=[("Bilish","Bilish"), ("Qo'llash","Qo'llash"), ("Mulohaza","Mulohaza")], verbose_name="Mezon nomi")
     score = models.FloatField(verbose_name="Savol bali")
 
     def __str__(self):
