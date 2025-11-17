@@ -24,17 +24,17 @@ class CutomLoginView(TokenObtainPairView):
             value=data['access'],
             httponly=True,
             secure=False,
-            domain=".up.railway.app",
-            # samesite='Lax',
-            max_age=604800
+            samesite=None,
+            max_age=604800,
+            domain=None  
         )
         response.set_cookie(
             key='refresh_token',
             value=data['refresh'],
-            domain=".up.railway.app",
+            domain=None,
             httponly=True,
             secure=False,
-            # samesite="Lax",
+            samesite=None,
             max_age=604800,
         )
 
