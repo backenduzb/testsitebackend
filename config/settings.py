@@ -30,7 +30,7 @@ DEBUG = os.getenv("DEBUG", "True")
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = ["..."]
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOST")
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
