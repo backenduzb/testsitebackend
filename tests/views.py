@@ -3,6 +3,7 @@ from .serializers import TestSerializer, TestCaseSerializer, TestCheckerSerializ
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Test, TestCase
+from scores.serializers import ScoreSerialzer
 from scores.models import Score
 from django.shortcuts import get_object_or_404, get_list_or_404
 from accounts.serializers import UserSerializer
@@ -12,15 +13,26 @@ class AllTestCaseView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        tests = TestCase.objects.all()
-        serializer = TestCaseSerializer(tests, many=True)
+        testcases = TestCase.objects.all().order_by('-id')
+        user_scores = Score.objects.filter(user=request.user)
+        result = []
+        completed_testcase_ids = set(user_scores.values_list('test', flat=True)) 
 
-        return Response(
-            {'data':serializer.data},
-            status=200
-        )
+        for testcase in testcases:
+            tests = testcase.tests.all()  
+            tests_data = TestSerializer(tests, many=True).data
+
+            testcase_completed = testcase.id in completed_testcase_ids
+
+            testcase_data = TestCaseSerializer(testcase).data
+            testcase_data['tests'] = tests_data
+            testcase_data['this_completed'] = testcase_completed
+            result.append(testcase_data)
+
+        return Response({'data': result}, status=200)
     
     def post(self, request):
+
         test_id = request.data.get('test_id')
         test = get_object_or_404(TestCase, id=test_id)
         tests = get_list_or_404(Test, testcase=test)
@@ -40,37 +52,58 @@ class CheckAnswersView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
+        bilish = 0
+        qollash = 0
+        muhokama = 0
+
         testcase_id = data['testcase_id']
         answers = data['answers']
 
+        qollash_count = 0
+        muhokama_count = 0
+        bilish_count = 0
         score = 0
         testcase = get_object_or_404(TestCase, id=testcase_id)
-        total = 40
+        all_tests_count = Test.objects.filter(testcase=testcase).count()
 
         for ans in answers:
             try:
                 test = Test.objects.get(id=ans['test_id'], testcase=testcase)
 
                 if test.correct_answer == ans['answer']:
-                    score += float(test.test_score)
+                    if test.test_score.name == "Bilish":
+                        bilish += float(test.test_score.score)
+                        bilish_count += 1
+                    if test.test_score.name == "Qo'llash":
+                        qollash += float(test.test_score.score)
+                        qollash_count += 1
+                    if test.test_score.name == "Muhokama":
+                        muhokama += float(test.test_score.score)
+                        muhokama_count += 1
+                    score += float(test.test_score.score)
 
             except Test.DoesNotExist:
                 pass
+
+        all_correct = bilish_count+qollash_count+muhokama_count
         
         new_score = Score.objects.create(
+            total=all_tests_count,
+            completed=all_correct,
             test=testcase,
             score=score,
+            bilish=bilish,
+            bilish_count=bilish_count,
+            qollash=qollash,
+            qollash_count=qollash_count,
+            muhokama=muhokama,
+            muhokama_count=muhokama_count
         )
         user.scores.add(new_score)
         user.save()
+        score_serializer = ScoreSerialzer(new_score)
         serializer = UserSerializer(request.user)
-
         return Response({
                 'user_data':serializer.data,
-                'current_scores':{
-                    "total": total,
-                    "score": score,
-                    "incorrect": total - score,
-                    "percentage": f"{round((score / total) * 100, 2)}%"
-        }
+                'current_scores':score_serializer.data
         }, status=200)

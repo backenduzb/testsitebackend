@@ -25,9 +25,15 @@ class TestCase(models.Model):
         verbose_name = "TestCase"
         verbose_name_plural = "TestCaselar"
 
+class Ball(models.Model):
+    name = models.CharField(max_length=256, verbose_name="Mezon nomi")
+    score = models.FloatField(verbose_name="Savol bali")
+
+    def __str__(self):
+        return f"{self.name}"
 class Test(models.Model):
 
-    test_score = models.FloatField(verbose_name="Savol bali", default=0)
+    test_score = models.ForeignKey(Ball, on_delete=models.CASCADE, verbose_name="Test bali")
     testcase = models.ForeignKey(
         TestCase,
         on_delete=models.CASCADE,
