@@ -122,7 +122,7 @@ SIMPLE_JWT = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        "ENGINE": "django.db.backends.postgresql",
         'NAME': os.getenv("DATABASE_NAME"),
         'USER': os.getenv("DATABASE_USER"),
         'PASSWORD': os.getenv("POSGRES_PASSWORD"),
