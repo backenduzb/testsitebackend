@@ -1,5 +1,10 @@
 from django.db import models
+from string import digits
+from random import choices
 
+def generate_test_key():
+    return "".join(choices(digits, k=6))
+    
 class Subject(models.Model):
     name = models.CharField(max_length=128)
 
@@ -17,6 +22,8 @@ class TestCase(models.Model):
         verbose_name="Fan"
     )
     name = models.CharField(max_length=256)
+    secret_key = models.CharField(max_length=8, default=generate_test_key)
+    over_time = models.TimeField(null=True, blank=True,default="09:00")
 
     def __str__(self):
         return f"{self.name}"
@@ -31,6 +38,7 @@ class Ball(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
 class Test(models.Model):
 
     test_score = models.ForeignKey(Ball, on_delete=models.CASCADE, verbose_name="Test bali")

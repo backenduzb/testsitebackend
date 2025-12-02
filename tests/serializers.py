@@ -17,18 +17,17 @@ class TestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Test
-        fields = '__all__'
+        exclude = ["correct_answer"]
 
     
 class TestCaseSerializer(serializers.ModelSerializer):
-    tests = TestSerializer(read_only=True, many=True)
     subject = SubjectSerializer(read_only=True)
     tests_count = serializers.SerializerMethodField()
     this_completed = serializers.SerializerMethodField()
 
     class Meta:
         model = TestCase
-        fields = ['id','name','subject', 'tests', 'tests_count', 'this_completed']
+        fields = ['id','name','subject', 'tests_count', 'this_completed']
 
     def get_this_completed(self, obj):
         user = self.context.get('user')

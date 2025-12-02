@@ -25,24 +25,33 @@ class AllTestCaseView(APIView):
             testcase_completed = testcase.id in completed_testcase_ids
 
             testcase_data = TestCaseSerializer(testcase).data
-            testcase_data['tests'] = tests_data
             testcase_data['this_completed'] = testcase_completed
             result.append(testcase_data)
 
         return Response({'data': result}, status=200)
     
     def post(self, request):
+        secure_code = request.data.get("secure_code")
 
         test_id = request.data.get('test_id')
         test = get_object_or_404(TestCase, id=test_id)
         tests = get_list_or_404(Test, testcase=test)
+        
+        if secure_code == test.secret_key:
 
-        serializer = TestSerializer(tests, many=True)
-        return Response(
-            {'data':serializer.data, 'count':len(tests)},
-            status=200
-        )
+            serializer = TestSerializer(tests, many=True)
+            response = Response(
+                {'data':serializer.data, 'count':len(tests)},
+                status=200
+            )
+        else:
+            response = Response(
+                {'message':"hafsizlik kodi noto'g'ri kiritldi."},
+                status=400
+            )
 
+        return response
+        
 class CheckAnswersView(APIView):
     permission_classes = [IsAuthenticated]
 
