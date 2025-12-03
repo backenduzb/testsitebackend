@@ -27,7 +27,7 @@ class TestCaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TestCase
-        fields = ['id','name','subject', 'tests_count', 'this_completed']
+        fields = ['id','name','subject', 'over_time','tests_count', 'this_completed']
 
     def get_this_completed(self, obj):
         user = self.context.get('user')

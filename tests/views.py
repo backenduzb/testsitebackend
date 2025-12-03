@@ -41,7 +41,7 @@ class AllTestCaseView(APIView):
 
             serializer = TestSerializer(tests, many=True)
             response = Response(
-                {'data':serializer.data, 'count':len(tests)},
+                {'data':serializer.data,"over_time":test.over_time, 'count':len(tests)},
                 status=200
             )
         else:
