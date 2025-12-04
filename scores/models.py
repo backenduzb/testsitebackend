@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 class Score(models.Model):
-    test = models.OneToOneField(
+    test = models.ForeignKey(
         'tests.TestCase',
         on_delete=models.CASCADE,
         verbose_name='Test',
