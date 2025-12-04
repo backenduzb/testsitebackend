@@ -34,8 +34,11 @@ else:
         "testsitebackend.up.railway.app"
     ]
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://testsitefrontend-j7iu.vercel.app"
+]
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "https://testsitebackend.up.railway.app"
