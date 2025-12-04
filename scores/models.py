@@ -7,7 +7,9 @@ class Score(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         verbose_name='Foydalanuvchi',
-        related_name='user_test_scores'
+        related_name='user_test_scores',
+        null=True,
+        blank=True,
     )
     test = models.ForeignKey(
         'tests.TestCase',
