@@ -1,22 +1,12 @@
 from django.db import models
-from django.conf import settings
-from django.utils import timezone
 
 class Score(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        verbose_name='Foydalanuvchi',
-        related_name='user_test_scores',
-        null=True,
-        blank=True,
-    )
-    test = models.ForeignKey(
+    test = models.OneToOneField(
         'tests.TestCase',
         on_delete=models.CASCADE,
         verbose_name='Test',
     )
-    score = models.FloatField(default=0)
+    score = models.FloatField(default=True)
     bilish = models.FloatField(default=0)
     bilish_count = models.IntegerField(default=0)
     qollash = models.FloatField(default=0)
@@ -25,15 +15,10 @@ class Score(models.Model):
     muhokama_count = models.IntegerField(default=0)
     total = models.IntegerField(default=0)
     completed = models.IntegerField(default=0)
-    
-    created_at = models.DateTimeField(default=timezone.now, auto_now_add=False)
-   
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.test}"
+        return f"{self.test}"
     
     class Meta:
         verbose_name = "Natija"
         verbose_name_plural = "Natijalar"
-        unique_together = ['user', 'test']

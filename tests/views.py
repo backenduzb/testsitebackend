@@ -94,36 +94,25 @@ class CheckAnswersView(APIView):
             except Test.DoesNotExist:
                 pass
 
-        all_correct = bilish_count + qollash_count + muhokama_count
+        all_correct = bilish_count+qollash_count+muhokama_count
         
-        # User va test bo'yicha yangi score yaratish yoki yangilash
-        score_obj, created = Score.objects.update_or_create(
-            user=user,  # User filter
-            test=testcase,  # Test filter
-            defaults={
-                'total': all_tests_count,
-                'completed': all_correct,
-                'score': score,
-                'bilish': bilish,
-                'bilish_count': bilish_count,
-                'qollash': qollash,
-                'qollash_count': qollash_count,
-                'muhokama': muhokama,
-                'muhokama_count': muhokama_count
-            }
+        new_score = Score.objects.create(
+            total=all_tests_count,
+            completed=all_correct,
+            test=testcase,
+            score=score,
+            bilish=bilish,
+            bilish_count=bilish_count,
+            qollash=qollash,
+            qollash_count=qollash_count,
+            muhokama=muhokama,
+            muhokama_count=muhokama_count
         )
-        
-        # Agar ManyToMany bog'lamoqchi bo'lsangiz (ixtiyoriy)
-        if score_obj not in user.scores.all():
-            user.scores.add(score_obj)
-            user.save()
-        
-        score_serializer = ScoreSerializer(score_obj)
-        user_serializer = UserSerializer(request.user)
-        
+        user.scores.add(new_score)
+        user.save()
+        score_serializer = ScoreSerialzer(new_score)
+        serializer = UserSerializer(request.user)
         return Response({
-            'user_data': user_serializer.data,
-            'current_scores': score_serializer.data,
-            'created_new': created,
-            'message': 'Yangilandi' if not created else 'Yaratildi'
+                'user_data':serializer.data,
+                'current_scores':score_serializer.data
         }, status=200)
