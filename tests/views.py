@@ -55,7 +55,6 @@ class AllTestCaseView(APIView):
 class CheckAnswersView(APIView):
     permission_classes = [IsAuthenticated]
 
-    ``
     def post(self, request):
         user = request.user
         serializer = TestCheckerSerializer(data=request.data)
@@ -65,68 +64,55 @@ class CheckAnswersView(APIView):
         bilish = 0
         qollash = 0
         muhokama = 0
-        bilish_count = 0
-        qollash_count = 0
-        muhokama_count = 0
-        score = 0
 
         testcase_id = data['testcase_id']
         answers = data['answers']
+
+        qollash_count = 0
+        muhokama_count = 0
+        bilish_count = 0
+        score = 0
         testcase = get_object_or_404(TestCase, id=testcase_id)
         all_tests_count = Test.objects.filter(testcase=testcase).count()
 
         for ans in answers:
             try:
                 test = Test.objects.get(id=ans['test_id'], testcase=testcase)
+
                 if test.correct_answer == ans['answer']:
                     if test.test_score.name == "Bilish":
                         bilish += float(test.test_score.score)
                         bilish_count += 1
-                    elif test.test_score.name == "Qo'llash":
+                    if test.test_score.name == "Qo'llash":
                         qollash += float(test.test_score.score)
                         qollash_count += 1
-                    elif test.test_score.name == "Muhokama":
+                    if test.test_score.name == "Muhokama":
                         muhokama += float(test.test_score.score)
                         muhokama_count += 1
                     score += float(test.test_score.score)
+
             except Test.DoesNotExist:
-                continue
+                pass
 
-        all_correct = bilish_count + qollash_count + muhokama_count
-
-        score_obj, created = Score.objects.get_or_create(
-            user=user,
+        all_correct = bilish_count+qollash_count+muhokama_count
+        
+        new_score = Score.objects.create(
+            total=all_tests_count,
+            completed=all_correct,
             test=testcase,
-            defaults={
-                'total': all_tests_count,
-                'completed': all_correct,
-                'score': score,
-                'bilish': bilish,
-                'bilish_count': bilish_count,
-                'qollash': qollash,
-                'qollash_count': qollash_count,
-                'muhokama': muhokama,
-                'muhokama_count': muhokama_count,
-            }
+            score=score,
+            bilish=bilish,
+            bilish_count=bilish_count,
+            qollash=qollash,
+            qollash_count=qollash_count,
+            muhokama=muhokama,
+            muhokama_count=muhokama_count
         )
-
-        if not created:
-            score_obj.total = all_tests_count
-            score_obj.completed = all_correct
-            score_obj.score = score
-            score_obj.bilish = bilish
-            score_obj.bilish_count = bilish_count
-            score_obj.qollash = qollash
-            score_obj.qollash_count = qollash_count
-            score_obj.muhokama = muhokama
-            score_obj.muhokama_count = muhokama_count
-            score_obj.save()
-
-        score_serializer = ScoreSerialzer(score_obj)
-        user_serializer = UserSerializer(user)
-
+        user.scores.add(new_score)
+        user.save()
+        score_serializer = ScoreSerialzer(new_score)
+        serializer = UserSerializer(request.user)
         return Response({
-            'user_data': user_serializer.data,
-            'current_scores': score_serializer.data
+                'user_data':serializer.data,
+                'current_scores':score_serializer.data
         }, status=200)
-
