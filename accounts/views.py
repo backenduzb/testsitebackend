@@ -23,20 +23,19 @@ class CutomLoginView(TokenObtainPairView):
             key='access_token',
             value=data['access'],
             httponly=True,
-            secure=False,
-            samesite=None,
+            secure=True,
+            samesite="none",
             max_age=604800,
-            domain=None  
         )
         response.set_cookie(
             key='refresh_token',
             value=data['refresh'],
-            domain=None,
             httponly=True,
-            secure=False,
-            samesite=None,
+            secure=True,
+            samesite="none",
             max_age=604800,
         )
+
 
         return response
 
