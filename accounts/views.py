@@ -22,7 +22,7 @@ class CutomLoginView(TokenObtainPairView):
         response.set_cookie(
             key='access_token',
             value=data['access'],
-            httponly=True,
+            httponly=False,
             secure=False,
             samesite="none",
             max_age=604800,
@@ -31,7 +31,7 @@ class CutomLoginView(TokenObtainPairView):
         response.set_cookie(
             key='refresh_token',
             value=data['refresh'],
-            httponly=True,
+            httponly=False,
             secure=False,
             samesite="none",
             max_age=604800,
