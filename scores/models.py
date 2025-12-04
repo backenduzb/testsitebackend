@@ -23,6 +23,9 @@ class Score(models.Model):
     total = models.IntegerField(default=0)
     completed = models.IntegerField(default=0)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_data = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return f"{self.test}"
     
