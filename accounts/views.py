@@ -26,7 +26,7 @@ class CutomLoginView(TokenObtainPairView):
             secure=True,      
             samesite="None",  
             max_age=604800,
-            domain="vercel.app"
+            # domain="vercel.app"
         )
         response.set_cookie(
             key='refresh_token',
@@ -35,7 +35,7 @@ class CutomLoginView(TokenObtainPairView):
             secure=True,      
             samesite="None",  
             max_age=604800,
-            domain="vercel.app"
+            # domain="vercel.app"
         )
 
 
