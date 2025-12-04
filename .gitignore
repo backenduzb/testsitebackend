@@ -1,2 +1,27 @@
-/.env
-/postgres
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Django migrationlar (faqat __init__.py ni qoldiramiz)
+**/migrations/**
+!**/migrations/__init__.py
+
+# Environment
+.env
+venv/
+.venv/
+
+# OS files
+.DS_Store
+
+# PyCharm / VSCode
+.idea/
+*.iml
+.vscode/
+
+# Logs
+*.log
+
+# Postgres data (docker volume)
+postgres/
