@@ -57,7 +57,7 @@ class User(AbstractUser):
         verbose_name='Natijalari',
         blank=True,
     )
-
+    
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
