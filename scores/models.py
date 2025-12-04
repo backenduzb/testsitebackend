@@ -1,7 +1,7 @@
 from django.db import models
 
 class Score(models.Model):
-    test = models.OneToOneField(
+    test = models.ForeignKey(
         'tests.TestCase',
         on_delete=models.CASCADE,
         verbose_name='Test',
