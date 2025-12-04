@@ -56,6 +56,7 @@ class User(AbstractUser):
         'scores.Score',
         verbose_name='Natijalari',
         blank=True,
+        related_name='users'  
     )
     
     USERNAME_FIELD = 'username'
@@ -72,5 +73,6 @@ class User(AbstractUser):
             self.username = generate_username(self.full_name)
 
         self.save_base()
+    
     def __str__(self):
         return f"{self.full_name}"
