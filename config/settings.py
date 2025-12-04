@@ -31,14 +31,14 @@ if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = [
-        "testsitebackend-production.up.railway.app"
+        "testsitebackend.up.railway.app"
     ]
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://testsitebackend-production.up.railway.app"
+    "https://testsitebackend.up.railway.app"
 ]
 
 # Application definition
