@@ -22,20 +22,20 @@ class CutomLoginView(TokenObtainPairView):
         response.set_cookie(
             key='access_token',
             value=data['access'],
-            httponly=False,
+            httponly=True,
             secure=False,
-            samesite="none",
-            max_age=604800,
-            domain="vercel.app"
+            samesite='Lax',
+            max_age=604800
+            # domain="vercel.app"
         )
         response.set_cookie(
             key='refresh_token',
             value=data['refresh'],
-            httponly=False,
+            httponly=True,
             secure=False,
-            samesite="none",
-            max_age=604800,
-            domain="vercel.app"
+            samesite='Lax',
+            max_age=604800
+            # domain="vercel.app"
         )
 
 
