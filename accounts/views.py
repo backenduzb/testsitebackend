@@ -23,7 +23,7 @@ class CutomLoginView(TokenObtainPairView):
             key='access_token',
             value=data['access'],
             httponly=True,
-            secure=True,
+            secure=False,
             samesite="none",
             max_age=604800,
             domain="vercel.app"
@@ -32,7 +32,7 @@ class CutomLoginView(TokenObtainPairView):
             key='refresh_token',
             value=data['refresh'],
             httponly=True,
-            secure=True,
+            secure=False,
             samesite="none",
             max_age=604800,
             domain="vercel.app"
