@@ -1,12 +1,13 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 class Score(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         verbose_name='Foydalanuvchi',
-        related_name='user_test_scores'  
+        related_name='user_test_scores'
     )
     test = models.ForeignKey(
         'tests.TestCase',
@@ -22,7 +23,9 @@ class Score(models.Model):
     muhokama_count = models.IntegerField(default=0)
     total = models.IntegerField(default=0)
     completed = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
+    
+    created_at = models.DateTimeField(default=timezone.now, auto_now_add=False)
+   
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
