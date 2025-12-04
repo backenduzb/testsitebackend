@@ -6,6 +6,13 @@ class Score(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Test',
     )
+
+    user = models.ForeignKey(
+        'accounts.User',
+        on_delete=models.CASCADE,
+        verbose_name='User'
+    )
+
     score = models.FloatField(default=True)
     bilish = models.FloatField(default=0)
     bilish_count = models.IntegerField(default=0)

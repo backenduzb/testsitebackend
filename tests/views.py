@@ -95,8 +95,10 @@ class CheckAnswersView(APIView):
                 pass
 
         all_correct = bilish_count+qollash_count+muhokama_count
-        
+        userjan=User.objects.get(id=request.user.id)
+
         new_score = Score.objects.create(
+            user=userjan,
             total=all_tests_count,
             completed=all_correct,
             test=testcase,
@@ -108,8 +110,6 @@ class CheckAnswersView(APIView):
             muhokama=muhokama,
             muhokama_count=muhokama_count
         )
-        user.scores.add(new_score)
-        user.save()
         score_serializer = ScoreSerialzer(new_score)
         serializer = UserSerializer(request.user)
         return Response({

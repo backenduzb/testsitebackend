@@ -7,15 +7,15 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from tests.models import TestCase
 from accounts.models import User
+from scores.models import Score
 
 class StatusView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, id):
         
-        user_scores = get_object_or_404(User, id=request.user.id)
         testcase = get_object_or_404(TestCase, id=id)
-        score = user_scores.scores.get(test=testcase)
+        score = Score.objects.get(test=testcase, user=request.user.id)
         serializer = ScoreSerialzer(score)
         
         return Response(

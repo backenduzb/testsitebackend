@@ -52,12 +52,6 @@ class User(AbstractUser):
         null=True,
         blank=True
     )
-    scores = models.ManyToManyField(
-        'scores.Score',
-        verbose_name='Natijalari',
-        blank=True,
-        related_name='users'  
-    )
     
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
