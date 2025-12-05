@@ -34,12 +34,15 @@ else:
         "testsitebackend.up.railway.app"
     ]
 
+if not DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        "https://testsitefrontend-j7iu.vercel.app"
+    ]
+else:
+    CORS_ALL_ALLOWED_ORIGINS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "https://testsitefrontend-j7iu.vercel.app"
-]
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "https://testsitebackend.up.railway.app"
@@ -61,6 +64,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
     'scores',
+    'excel',
     'tests',
     'api'
 ]

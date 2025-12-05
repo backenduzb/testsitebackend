@@ -15,7 +15,7 @@ class StatusView(APIView):
     def post(self, request, id):
         
         testcase = get_object_or_404(TestCase, id=id)
-        score = Score.objects.get(test=testcase, user=request.user.id)
+        score = Score.objects.filter(test=testcase, user=request.user.id).first()
         serializer = ScoreSerialzer(score)
         
         return Response(
