@@ -4,8 +4,14 @@ __pycache__/
 *.sqlite3
 
 # Django migrationlar (faqat __init__.py ni qoldiramiz)
-**/migrations/**
-!**/migrations/__init__.py
+tests/migrations/**
+!tests/migrations/__init__.py
+accounts/migrations/**
+!accounts/migrations/__init__.py
+scores/migrations/**
+!scores/migrations/__init__.py
+tests/migrations/**
+!tests/migrations/__init__.py
 
 # Environment
 .env
