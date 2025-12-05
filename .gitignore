@@ -1,7 +1,5 @@
-# Python
 __pycache__/
 *.py[cod]
 *.sqlite3
 
-# Django migrations (CACHEni emas, real migratsiyalarni saqlaymiz)
 */migrations/__pycache__/

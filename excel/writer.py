@@ -9,7 +9,7 @@ wb = Workbook()
 
 def make_xlsx( subject_name: str ):
     
-    scores = Score.objects.filter(test__subject__name=subject_name).all()
+    scores = Score.objects.filter(test__subject__name=subject_name).all().order_by("-user__class_name__name")
 
     # print(scores)
     print("Succes  _______________________________________________")
